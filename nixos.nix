@@ -24,7 +24,9 @@ let
     claude-code
     curl
     darktable
+    davinci-resolve-studio
     delta
+    desktop-file-utils
     discord
     eza
     fastfetch
@@ -49,6 +51,7 @@ let
       ];
     })
     groff
+    gruvbox-plus-icons
     gum
     hexyl
     htop
@@ -57,12 +60,14 @@ let
     hyphenDicts.en_US
     imagemagick
     inkscape
+    insync
     jq
     kicad
     kitty
     lua-language-server
     man-pages
     man-pages-posix
+    meld
     mkvtoolnix
     mpv
     mupdf
@@ -85,12 +90,14 @@ let
     ripgrep
     rsgain
     rsync
+    shared-mime-info
     signal-desktop
     silver-searcher
     sqlitebrowser
     statix
     stylua
     sublime-merge
+    sublime4
     texliveFull
     thunderbird
     tmux
@@ -99,10 +106,35 @@ let
     vim
     vlc
     wl-clipboard
+    xdg-utils
     yazi
     yq
     zoom-us
   ];
+
+  kdePkgs =
+    with pkgs;
+    with kdePackages;
+    [
+      ark
+      breeze
+      breeze-icons
+      dolphin
+      dolphin-plugins
+      elisa
+      gwenview
+      kate
+      kde-cli-tools
+      kimageformats
+      kio
+      kio-extras
+      konsole
+      kservice
+      markdownpart
+      plasma-workspace
+      okular
+      qt6ct
+    ];
 
   fontPkgs = with pkgs; [
     font-awesome
@@ -143,12 +175,17 @@ in
     };
   };
 
+  # Some packages expect this group to exist.
+  users.groups.netdev = {};
+
   users.users.${user.name} = {
     description = user.description;
     isNormalUser = true;
     extraGroups = [
       "docker"
+      "input"
       "networkmanager"
+      "video"
       "wheel"
     ];
     useDefaultShell = false;
@@ -188,12 +225,28 @@ in
     "1.1.1.1"
   ];
 
+  environment.pathsToLink = [
+    "/share/applications"
+  ];
+
+  environment.etc."xdg/menus/applications.menu".source =
+    "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
+
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     EDITOR = "vim";
+    QT_QPA_PLATFORM = "wayland;xcb";
+    QT_QPA_PLATFORMTHEME = "gtk3";
+    QT_QPA_PLATFORMTHEME_QT6 = "gtk3";
+    XDG_DATA_DIRS = [
+      "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}"
+      "/run/current-system/sw/share"
+      "/home/${user.name}/.local/share"
+    ];
+    XDG_MENU_PREFIX = "kf6-";
   };
 
-  environment.systemPackages = systemPkgs;
+  environment.systemPackages = systemPkgs ++ kdePkgs;
   fonts.packages = fontPkgs;
 
   programs._1password.enable = true;
@@ -216,23 +269,19 @@ in
     enableVPN = true;
     systemd.enable = true;
   };
-  
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${config.programs.niri.package}/bin/niri-session";
-	user = user.name;
-      };
-    };
-  };
 
-  services.elephant = {
+  services.dbus.enable = true;
+  programs.dconf.enable = true;
+
+  services.displayManager.dms-greeter = {
     enable = true;
+    compositor.name = "niri";
+    configHome = "/home/${user.name}";
   };
 
   security.polkit.enable = true;
   services.gnome.gnome-keyring.enable = true;
+  services.gvfs.enable = true;
 
   # programs.ssh.startAgent = true;
 
@@ -266,6 +315,7 @@ in
   };
 
   services.tailscale.enable = true;
+  services.udisks2.enable = true;
 
   services.xserver = {
     enable = true;

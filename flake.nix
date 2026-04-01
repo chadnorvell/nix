@@ -42,6 +42,11 @@
           };
 
           modules = [
+            {
+              nixpkgs.config.permittedInsecurePackages = [
+                "openssl-1.1.1w"
+              ];
+            }
             (import ./nixos.nix { inherit hostName user; })
             ./hosts/${hostName}/configuration.nix
             home-manager.nixosModules.home-manager

@@ -22,44 +22,44 @@ in
   ];
 
   home.shellAliases = {
-      clear = "command clear -x";
-      cp = "command cp -v";
-      cz = "chezmoi diff";
-      cza = "chezmoi add";
-      czz = "chezmoi apply";
-      ga = "git add -A";
-      gb = "git branch";
-      gc = "git commit";
-      gca = "git commit --amend";
-      "gca!" = "git commit --amend --no-edit";
-      gcm = "git commit -m";
-      gd = "git diff";
-      gds = "git diff --staged";
-      gg = "git clone";
-      gh = "git checkout";
-      ghb = "git checkout -b";
-      gpu = "git pull";
-      gr = "git rebase";
-      gra = "git rebase --abort";
-      grc = "git rebase --continue";
-      gri = "git rebase -i";
-      gs = "git status";
-      gup = "git push";
-      "gup!" = "git push --force";
-      gZ = "git stash";
-      gZa = "git stash apply";
-      gZd = "git stash drop";
-      gZl = "git stash list";
-      gZp = "git stash pop";
-      gZs = "git stash show";
-      l = "eza";
-      la = "eza --long --all";
-      lg = "eza --long --git --git-ignore";
-      lga = "eza --long --git";
-      ll = "eza --long";
-      ls = "command ls --color=auto";
-      rm = "trash-put";
-      rrm = "command rm";
+    clear = "command clear -x";
+    cp = "command cp -v";
+    cz = "chezmoi diff";
+    cza = "chezmoi add";
+    czz = "chezmoi apply";
+    ga = "git add -A";
+    gb = "git branch";
+    gc = "git commit";
+    gca = "git commit --amend";
+    "gca!" = "git commit --amend --no-edit";
+    gcm = "git commit -m";
+    gd = "git diff";
+    gds = "git diff --staged";
+    gg = "git clone";
+    gh = "git checkout";
+    ghb = "git checkout -b";
+    gpu = "git pull";
+    gr = "git rebase";
+    gra = "git rebase --abort";
+    grc = "git rebase --continue";
+    gri = "git rebase -i";
+    gs = "git status";
+    gup = "git push";
+    "gup!" = "git push --force";
+    gZ = "git stash";
+    gZa = "git stash apply";
+    gZd = "git stash drop";
+    gZl = "git stash list";
+    gZp = "git stash pop";
+    gZs = "git stash show";
+    l = "eza";
+    la = "eza --long --all";
+    lg = "eza --long --git --git-ignore";
+    lga = "eza --long --git";
+    ll = "eza --long";
+    ls = "command ls --color=auto";
+    rm = "trash-put";
+    rrm = "command rm";
   };
 
   systemd.user.sessionVariables = {
@@ -96,6 +96,8 @@ in
     enableFishIntegration = true;
   };
 
+  services.udiskie.enable = true;
+
   xdg.enable = true;
   xdg.userDirs = {
     enable = true;
@@ -108,5 +110,40 @@ in
     publicShare = "${homeDirectory}/public";
     templates = "${homeDirectory}/docs/templates";
     videos = "${homeDirectory}/media/videos";
+  };
+
+  xdg.portal = {
+    enable = true;
+
+    config = {
+      common = {
+        default = [ "gtk" ];
+        "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+      };
+    };
+
+    extraPortals = [
+      pkgs.kdePackages.xdg-desktop-portal-kde
+      pkgs.xdg-desktop-portal-gnome
+      pkgs.xdg-desktop-portal-gtk
+    ];
+  };
+
+  xdg.configFile."mimeapps.list".force = true;
+
+  xdg.mimeApps = {
+    enable = true;
+
+    defaultApplications = {
+      "application/pdf" = [ "org.kde.okular.desktop" ];
+      "image/jpeg" = [ "org.kde.gwenview.desktop" ];
+      "image/png" = [ "org.kde.gwenview.desktop" ];
+      "inode/directory" = [ "org.kde.dolphin.desktop" ];
+      "text/html" = [ "google-chrome.desktop" ];
+      "x-scheme-handler/http" = [ "google-chrome.desktop" ];
+      "x-scheme-handler/https" = [ "google-chrome.desktop" ];
+      "x-scheme-handler/about" = [ "google-chrome.desktop" ];
+      "x-scheme-handler/unknown" = [ "google-chrome.desktop" ];
+    };
   };
 }

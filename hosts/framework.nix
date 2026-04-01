@@ -12,6 +12,9 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    extraPackages = with pkgs; [
+      mesa.opencl
+    ];
   };
 
   hardware.bluetooth.enable = true;
@@ -37,4 +40,6 @@
       HibernateDelaySec = "240min";
     };
   };
+
+  environment.variables.RUSTICL_ENABLE = "radeonsi";
 }
