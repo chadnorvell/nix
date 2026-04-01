@@ -29,13 +29,11 @@ let
     eza
     fastfetch
     fd
-    feh
     ffmpeg
     file
     firefox
     fish-lsp
     flac
-    fuzzel
     fzf
     gcc
     gemini-cli
@@ -52,7 +50,6 @@ let
     })
     groff
     gum
-    haruna
     hexyl
     htop
     hunspell
@@ -100,17 +97,11 @@ let
     trash-cli
     usbutils
     vim
-    viu
     vlc
     wl-clipboard
     yazi
     yq
     zoom-us
-  ];
-
-  flakePkgs = with inputs; [
-    elephant.packages.${pkgs.system}.default
-    walker.packages.${pkgs.system}.default
   ];
 
   fontPkgs = with pkgs; [
@@ -202,7 +193,7 @@ in
     EDITOR = "vim";
   };
 
-  environment.systemPackages = systemPkgs ++ flakePkgs;
+  environment.systemPackages = systemPkgs;
   fonts.packages = fontPkgs;
 
   programs._1password.enable = true;

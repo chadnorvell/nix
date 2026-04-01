@@ -64,9 +64,9 @@ in
 
   systemd.user.sessionVariables = {
     EDITOR = "nvim";
-    GOPATH = "${homeDirectory}/pkg/go";
+    GOPATH = "${homeDirectory}/.pkg/go";
     MAKEFLAGS = "-j20";
-    npm_config_prefix = "${homeDirectory}/.local";
+    npm_config_prefix = "${homeDirectory}/.pkg/npm";
     PATH = lib.strings.concatStringsSep ":" addToPath + ":$PATH";
   };
 
@@ -84,6 +84,12 @@ in
     '';
   };
 
+  programs.ssh = {
+    enable = true;
+    addKeysToAgent = "yes";
+    package = pkgs.openssh;
+  };
+
   programs.zoxide = {
     enable = true;
     enableBashIntegration = false;
@@ -99,7 +105,7 @@ in
     download = "${homeDirectory}/inbox";
     music = "${homeDirectory}/media/music";
     pictures = "${homeDirectory}/media/images";
-    publicShare = "${homeDirectory}/pub";
+    publicShare = "${homeDirectory}/public";
     templates = "${homeDirectory}/docs/templates";
     videos = "${homeDirectory}/media/videos";
   };

@@ -2,12 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    # niri.url = "github:sodiboo/niri-flake";
-
-    # dms = {
-    #   url = "github:AvengeMedia/DankMaterialShell/stable";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -27,8 +21,6 @@
       self,
       nixpkgs,
       nixos-hardware,
-      # niri,
-      # dms,
       home-manager,
       ...
     }@inputs:
@@ -50,10 +42,6 @@
           };
 
           modules = [
-            # {
-	    #   nixpkgs.overlays = [ niri.overlays.niri ];
-            # }
-	    # dms.nixosModules.dank-material-shell
             (import ./nixos.nix { inherit hostName user; })
             ./hosts/${hostName}/configuration.nix
             home-manager.nixosModules.home-manager
