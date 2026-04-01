@@ -71,6 +71,7 @@ let
     mkvtoolnix
     mpv
     mupdf
+    nautilus
     neovim
     nil
     nixfmt
@@ -107,6 +108,7 @@ let
     vlc
     wl-clipboard
     xdg-utils
+    xwayland-satellite
     yazi
     yq
     zoom-us
@@ -280,6 +282,7 @@ in
   };
 
   security.polkit.enable = true;
+  security.rtkit.enable = true;
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
 

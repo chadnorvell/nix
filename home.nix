@@ -70,6 +70,13 @@ in
     PATH = lib.strings.concatStringsSep ":" addToPath + ":$PATH";
   };
 
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 24;
+    gtk.enable = true;
+  };
+
   programs.home-manager.enable = true;
 
   programs.bash = {
