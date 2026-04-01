@@ -2,10 +2,23 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    # niri.url = "github:sodiboo/niri-flake";
+
+    # dms = {
+    #   url = "github:AvengeMedia/DankMaterialShell/stable";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    elephant.url = "github:abenz1267/elephant";
+
+    walker = {
+      url = "github:abenz1267/walker";
+      inputs.elephant.follows = "elephant";
     };
   };
 
@@ -14,6 +27,8 @@
       self,
       nixpkgs,
       nixos-hardware,
+      # niri,
+      # dms,
       home-manager,
       ...
     }@inputs:
@@ -35,8 +50,12 @@
           };
 
           modules = [
+            # {
+	    #   nixpkgs.overlays = [ niri.overlays.niri ];
+            # }
+	    # dms.nixosModules.dank-material-shell
             (import ./nixos.nix { inherit hostName user; })
-            ./hosts/${hostName}.nix
+            ./hosts/${hostName}/configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -58,7 +77,6 @@
         advaita = hostConfig "advaita" [ nixos-hardware.nixosModules.framework-16-amd-ai-300-series ];
         mazama = hostConfig "mazama" [ nixos-hardware.nixosModules.framework-amd-ai-300-series ];
         sunyata = hostConfig "sunyata" [ ];
-        claudius = hostConfig "claudius" [ ];
       };
     };
 }

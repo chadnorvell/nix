@@ -3,6 +3,8 @@
   user,
 }:
 {
+  config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -11,8 +13,6 @@
 let
   systemPkgs = with pkgs; [
     android-tools
-    ansifilter
-    antigravity-fhs
     bat
     btop
     calibre
@@ -22,7 +22,6 @@ let
     clang
     clang-tools
     claude-code
-    code-cursor-fhs
     curl
     darktable
     delta
@@ -36,6 +35,7 @@ let
     firefox
     fish-lsp
     flac
+    fuzzel
     fzf
     gcc
     gemini-cli
@@ -63,14 +63,12 @@ let
     jq
     kicad
     kitty
-    libreoffice-qt
     lua-language-server
     man-pages
     man-pages-posix
     mkvtoolnix
     mpv
     mupdf
-    neovide
     neovim
     nil
     nixfmt
@@ -104,36 +102,16 @@ let
     vim
     viu
     vlc
-    vscode-fhs
     wl-clipboard
     yazi
     yq
     zoom-us
   ];
 
-  kdePkgs =
-    with pkgs;
-    with kdePackages;
-    [
-      digikam
-      falkon
-      kbackup
-      kcharselect
-      kcolorchooser
-      kcron
-      kdenlive
-      kdialog
-      kget
-      kjournald
-      kompare
-      ksystemlog
-      partitionmanager
-      plasma-browser-integration
-      plasma-vault
-      sddm-kcm
-      skanpage
-      yakuake
-    ];
+  flakePkgs = with inputs; [
+    elephant.packages.${pkgs.system}.default
+    walker.packages.${pkgs.system}.default
+  ];
 
   fontPkgs = with pkgs; [
     font-awesome
@@ -200,13 +178,6 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
-  security.pam.services.kwallet = {
-    name = "kwallet";
-    enableKwallet = true;
-  };
-
-  security.rtkit.enable = true;
-
   security.sudo = {
     enable = true;
     execWheelOnly = true;
@@ -231,7 +202,7 @@ in
     EDITOR = "vim";
   };
 
-  environment.systemPackages = systemPkgs ++ kdePkgs;
+  environment.systemPackages = systemPkgs ++ flakePkgs;
   fonts.packages = fontPkgs;
 
   programs._1password.enable = true;
@@ -241,7 +212,38 @@ in
   };
 
   programs.fish.enable = true;
-  programs.ssh.startAgent = true;
+
+  programs.niri.enable = true;
+
+  programs.dms-shell = {
+    enable = true;
+    enableAudioWavelength = true;
+    enableCalendarEvents = true;
+    enableClipboardPaste = true;
+    enableDynamicTheming = true;
+    enableSystemMonitoring = true;
+    enableVPN = true;
+    systemd.enable = true;
+  };
+  
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${config.programs.niri.package}/bin/niri-session";
+	user = user.name;
+      };
+    };
+  };
+
+  services.elephant = {
+    enable = true;
+  };
+
+  security.polkit.enable = true;
+  services.gnome.gnome-keyring.enable = true;
+
+  # programs.ssh.startAgent = true;
 
   services.avahi = {
     enable = true;
@@ -249,8 +251,6 @@ in
     openFirewall = true;
   };
 
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
   services.openssh.enable = true;
 
   services.pipewire = {
