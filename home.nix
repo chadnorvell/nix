@@ -93,8 +93,11 @@ in
 
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
+    enableDefaultConfig = false;
     package = pkgs.openssh;
+    matchBlocks."*" = {
+      addKeysToAgent = "yes";
+    };
   };
 
   programs.zoxide = {
@@ -108,6 +111,7 @@ in
   xdg.enable = true;
   xdg.userDirs = {
     enable = true;
+    setSessionVariables = true;
     createDirectories = true;
     desktop = "${homeDirectory}/top";
     documents = "${homeDirectory}/docs";
