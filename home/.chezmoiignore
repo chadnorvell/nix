@@ -1,5 +1,0 @@
-**/*.src.ini
-
-{{ if eq .chezmoi.osRelease.id "nixos" }}
-.config/fish/config.fish
-{{ end }}
