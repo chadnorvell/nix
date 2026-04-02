@@ -1,9 +1,7 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
+    blender
     calibre
     chromium
     darktable

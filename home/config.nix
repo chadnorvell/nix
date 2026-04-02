@@ -106,8 +106,6 @@ in
     enableFishIntegration = true;
   };
 
-  # services.udiskie.enable = true;
-
   xdg.enable = true;
   xdg.userDirs = {
     enable = true;

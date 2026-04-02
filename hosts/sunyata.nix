@@ -11,6 +11,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
+  networking.hostName = "sunyata";
+
   # INSERT HW HERE
 
   fileSystems."/mnt/khazaana/media" = {

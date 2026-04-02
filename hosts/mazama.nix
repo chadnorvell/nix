@@ -10,6 +10,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
+  networking.hostName = "mazama";
+
   # INSERT HW HERE
 
   hardware.framework.laptop13.audioEnhancement = {

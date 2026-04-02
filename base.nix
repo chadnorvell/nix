@@ -1,10 +1,7 @@
 {
   lib,
   pkgs,
-
   user,
-  hostName,
-
   ...
 }:
 {
@@ -24,7 +21,9 @@
     allowUnfree = true;
   };
 
-  nixpkgs.overlays = [ (import ./utils.nix) ];
+  nixpkgs.overlays = [
+    (import ./utils.nix)
+  ];
 
   documentation = {
     enable = true;
@@ -40,21 +39,21 @@
     };
   };
 
-  # Some packages expect this group to exist.
+  # Some packages expect this group to exist
   users.groups.netdev = { };
 
   users.users.${user.name} = {
     description = user.description;
     isNormalUser = true;
+    useDefaultShell = false;
+    shell = pkgs.fish;
+
     extraGroups = [
-      "docker"
       "input"
       "networkmanager"
       "video"
       "wheel"
     ];
-    useDefaultShell = false;
-    shell = pkgs.fish;
   };
 
   time.timeZone = "America/Los_Angeles";
@@ -77,9 +76,6 @@
     wheelNeedsPassword = true;
   };
 
-  hardware.keyboard.qmk.enable = true;
-
-  networking.hostName = hostName;
   networking.networkmanager.enable = true;
   networking.wireless.enable = true;
   networking.useDHCP = lib.mkDefault true;
@@ -91,30 +87,18 @@
   ];
 
   environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
     EDITOR = "vim";
   };
 
   environment.systemPackages = with pkgs; [
     bat
     chezmoi
-    clang
-    clang-tools
     curl
-    delta
     eza
-    fastfetch
-    fd
-    file
-    fzf
-    gcc
     git
-    git-lfs
-    htop
     jq
     man-pages
     man-pages-posix
-    neovim
     openssh
     procps
     psmisc
@@ -125,13 +109,9 @@
     trash-cli
     vim
     yazi
-    yq
   ];
 
   programs.fish.enable = true;
-
-
-  # programs.ssh.startAgent = true;
 
   services.avahi = {
     enable = true;
@@ -161,6 +141,4 @@
       hplipWithPlugin
     ];
   };
-
-  # services.udisks2.enable = true;
 }

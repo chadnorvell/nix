@@ -23,22 +23,11 @@
       user = {
         name = "chad";
         description = "Chad Norvell";
-      };
-
-      homeConfig = {
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          users.${user.name} = {
-            imports = [ ./home.nix ];
-            home.username = user.name;
-            home.homeDirectory = "/home/${user.name}";
-          };
-        };
+        homeDirectory = "/home/chad";
       };
 
       hostConfig =
-        hostName: extraModules:
+        extraModules:
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
@@ -47,36 +36,37 @@
               inputs
               outputs
               user
-              hostName
               ;
           };
 
           modules = [
             ./base.nix
-            ./hosts/${hostName}.nix
             home-manager.nixosModules.home-manager
-            homeConfig
+            ./home
           ]
           ++ extraModules;
         };
     in
     {
       nixosConfigurations = {
-        advaita = hostConfig "advaita" [
-          nixos-hardware.nixosModules.framework-16-amd-ai-300-series
-          ./hosts/framework.nix
+        sunyata = hostConfig [
+          ./hosts/sunyata.nix
           ./hosts/workstation.nix
-          # ./apps/cli.nix
-          # ./apps/gui.nix
-          # ./apps/kde.nix
-          # ./apps/niri.nix
-          # ./apps/davinci.nix
-          # ./apps/docker.nix
-          # ./apps/tailscale.nix
         ];
 
-        mazama = hostConfig "mazama" [ nixos-hardware.nixosModules.framework-amd-ai-300-series ];
-        sunyata = hostConfig "sunyata" [ ];
+        advaita = hostConfig [
+          ./hosts/advaita.nix
+          ./hosts/framework.nix
+          ./hosts/workstation.nix
+          nixos-hardware.nixosModules.framework-16-amd-ai-300-series
+        ];
+
+        mazama = hostConfig [
+          ./hosts/mazama.nix
+          ./hosts/framework.nix
+          ./hosts/workstation.nix
+          nixos-hardware.nixosModules.framework-amd-ai-300-series
+        ];
       };
     };
 }

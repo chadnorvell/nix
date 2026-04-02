@@ -1,35 +1,62 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
     android-tools
+    ansifilter
     btop
     cifs-utils
+    clang
+    clang-tools
     claude-code
+    delta
+    direnv
+    dust
+    fastfetch
+    fd
     ffmpeg
+    file
     fish-lsp
     flac
+    fzf
     gemini-cli
+    gcc
     gh
+    git-lfs
     glow
     groff
     gum
     hexyl
+    htop
     imagemagick
+    just
+    lua
     lua-language-server
+    mdformat
     mkvtoolnix
+    mosh
     mupdf
+    nasm
+    neovim
     nil
     nixfmt
     opus-tools
+    pandoc
+    patchelf
     poppler-utils
+    pre-commit
     qpdf
     rsgain
+    shellcheck
+    shfmt
+    sox
     statix
     stylua
     texliveFull
+    tree-sitter
     usbutils
+    vscode-langservers-extracted
+    yaml-language-server
+    yq
+    yt-dlp
   ];
 }

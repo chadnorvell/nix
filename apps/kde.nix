@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   environment.systemPackages =
     with pkgs;
@@ -25,5 +22,6 @@
       plasma-workspace
       okular
       qt6ct
+      svgpart
     ];
 }
