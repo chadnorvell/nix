@@ -106,7 +106,7 @@ in
     enableFishIntegration = true;
   };
 
-  services.udiskie.enable = true;
+  # services.udiskie.enable = true;
 
   xdg.enable = true;
   xdg.userDirs = {
@@ -121,23 +121,6 @@ in
     publicShare = "${homeDirectory}/public";
     templates = "${homeDirectory}/docs/templates";
     videos = "${homeDirectory}/media/videos";
-  };
-
-  xdg.portal = {
-    enable = true;
-
-    config = {
-      common = {
-        default = [ "gtk" ];
-        "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
-      };
-    };
-
-    extraPortals = [
-      pkgs.kdePackages.xdg-desktop-portal-kde
-      pkgs.xdg-desktop-portal-gnome
-      pkgs.xdg-desktop-portal-gtk
-    ];
   };
 
   xdg.configFile."mimeapps.list".force = true;

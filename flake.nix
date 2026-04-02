@@ -7,13 +7,6 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    elephant.url = "github:abenz1267/elephant";
-
-    walker = {
-      url = "github:abenz1267/walker";
-      inputs.elephant.follows = "elephant";
-    };
   };
 
   outputs =
@@ -32,42 +25,56 @@
         description = "Chad Norvell";
       };
 
+      homeConfig = {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          users.${user.name} = {
+            imports = [ ./home.nix ];
+            home.username = user.name;
+            home.homeDirectory = "/home/${user.name}";
+          };
+        };
+      };
+
       hostConfig =
         hostName: extraModules:
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
           specialArgs = {
-            inherit inputs outputs;
+            inherit
+              inputs
+              outputs
+              user
+              hostName
+              ;
           };
 
           modules = [
-            {
-              nixpkgs.config.permittedInsecurePackages = [
-                "openssl-1.1.1w"
-              ];
-            }
-            (import ./nixos.nix { inherit hostName user; })
-            ./hosts/${hostName}/configuration.nix
+            ./base.nix
+            ./hosts/${hostName}.nix
             home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.${user.name} = {
-                  imports = [ ./home.nix ];
-                  home.username = user.name;
-                  home.homeDirectory = "/home/${user.name}";
-                };
-              };
-            }
+            homeConfig
           ]
           ++ extraModules;
         };
     in
     {
       nixosConfigurations = {
-        advaita = hostConfig "advaita" [ nixos-hardware.nixosModules.framework-16-amd-ai-300-series ];
+        advaita = hostConfig "advaita" [
+          nixos-hardware.nixosModules.framework-16-amd-ai-300-series
+          ./hosts/framework.nix
+          ./hosts/workstation.nix
+          # ./apps/cli.nix
+          # ./apps/gui.nix
+          # ./apps/kde.nix
+          # ./apps/niri.nix
+          # ./apps/davinci.nix
+          # ./apps/docker.nix
+          # ./apps/tailscale.nix
+        ];
+
         mazama = hostConfig "mazama" [ nixos-hardware.nixosModules.framework-amd-ai-300-series ];
         sunyata = hostConfig "sunyata" [ ];
       };

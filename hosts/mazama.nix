@@ -1,12 +1,16 @@
 {
+  config,
+  lib,
+  modulesPath,
   ...
 }:
 
 {
   imports = [
-    ./hardware-configuration.nix
-    ../framework.nix
+    (modulesPath + "/installer/scan/not-detected.nix")
   ];
+
+  # INSERT HW HERE
 
   hardware.framework.laptop13.audioEnhancement = {
     enable = false;

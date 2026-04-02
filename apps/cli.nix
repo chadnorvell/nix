@@ -1,0 +1,35 @@
+{
+  pkgs,
+  ...
+}:
+{
+  environment.systemPackages = with pkgs; [
+    android-tools
+    btop
+    cifs-utils
+    claude-code
+    ffmpeg
+    fish-lsp
+    flac
+    gemini-cli
+    gh
+    glow
+    groff
+    gum
+    hexyl
+    imagemagick
+    lua-language-server
+    mkvtoolnix
+    mupdf
+    nil
+    nixfmt
+    opus-tools
+    poppler-utils
+    qpdf
+    rsgain
+    statix
+    stylua
+    texliveFull
+    usbutils
+  ];
+}
