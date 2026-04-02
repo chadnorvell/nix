@@ -2,6 +2,7 @@
   lib,
   pkgs,
   user,
+  nixDir,
   ...
 }:
 {
@@ -96,6 +97,7 @@
     curl
     eza
     git
+    gum
     jq
     man-pages
     man-pages-posix
@@ -107,6 +109,7 @@
     silver-searcher
     tmux
     trash-cli
+    tree
     vim
     yazi
   ];

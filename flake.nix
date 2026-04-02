@@ -26,6 +26,11 @@
         homeDirectory = "/home/chad";
       };
 
+      nixDir = {
+        root = "${user.homeDirectory}/nix";
+        home = "${user.homeDirectory}/nix/home";
+      };
+
       hostConfig =
         extraModules:
         nixpkgs.lib.nixosSystem {
@@ -36,6 +41,7 @@
               inputs
               outputs
               user
+              nixDir
               ;
           };
 

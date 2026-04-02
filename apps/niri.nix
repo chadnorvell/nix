@@ -97,6 +97,13 @@ in
   };
 
   home-manager.users.${user.name} = {
+    home.pointerCursor = {
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
+      size = 24;
+      gtk.enable = true;
+    };
+
     xdg.configFile."niri/config.kdl" = {
       force = true;
 

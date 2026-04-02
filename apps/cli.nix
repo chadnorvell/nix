@@ -24,7 +24,6 @@
     git-lfs
     glow
     groff
-    gum
     hexyl
     htop
     imagemagick
