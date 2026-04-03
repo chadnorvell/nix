@@ -1,5 +1,5 @@
 final: prev: {
-  cxn = {
+  lib' = (prev.lib' or { }) // {
     writeShellScriptBin =
       name: script:
       let

@@ -8,6 +8,7 @@ return {
       },
     },
     formatters_by_ft = {
+      kdl = { "kdlfmt" },
       lua = { "stylua" },
       markdown = { "mdformat" },
       python = { "ruff" },

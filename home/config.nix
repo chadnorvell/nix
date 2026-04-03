@@ -8,6 +8,7 @@
 
 let
   homeDirectory = user.homeDirectory;
+
   cp = path: builtins.readFile "${nixDir.home}/${path}";
   ln = path: config.lib.file.mkOutOfStoreSymlink "${nixDir.home}/${path}";
 
@@ -126,16 +127,16 @@ in
   };
 
   home.shellAliases = {
-    clear = "command clear -x";
-    cp = "command cp -v";
+    clear = "clear -x";
+    cp = "cp -v";
     l = eza;
     la = "${eza} --long --all";
     lg = "${eza} --long --git --git-ignore";
     lga = "${eza} --long --git";
     ll = "${eza} --long";
-    ls = "command ls --color=auto";
+    ls = "ls --color=auto";
     rm = trash-put;
-    rrm = "command rm";
+    rrm = "rm";
   }
   // lib.attrsets.mapAttrs' gitAliasToShellAlias gitBasicAliases;
 

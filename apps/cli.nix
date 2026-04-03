@@ -28,6 +28,7 @@
     htop
     imagemagick
     just
+    kdlfmt
     lua
     lua-language-server
     mdformat
