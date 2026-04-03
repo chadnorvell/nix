@@ -15,7 +15,9 @@
   (add-to-list 'eglot-server-programs
                '((js-mode typescript-ts-mode) . ("rass" "typescript-language-server" "--stdio" "--" "vscode-eslint-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
-               '((go-mode go-ts-mode) . ("rass" "gopls" "--" "golangci-lint-langserver"))))
+               '((go-mode go-ts-mode) . ("rass" "gopls" "--" "golangci-lint-langserver")))
+  (add-to-list 'eglot-server-programs
+               '(nix-mode . ("nil"))))
 
 :general
 (general-define-key
