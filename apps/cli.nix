@@ -3,13 +3,10 @@
   environment.systemPackages = with pkgs; [
     android-tools
     ansifilter
-    btop
     cifs-utils
     clang
     clang-tools
-    claude-code
-    delta
-    direnv
+    curl
     dust
     fastfetch
     fd
@@ -18,40 +15,47 @@
     fish-lsp
     flac
     fzf
-    gemini-cli
     gcc
     gh
-    git-lfs
     glow
     groff
     hexyl
     htop
     imagemagick
+    jq
     just
     kdlfmt
     lua
     lua-language-server
+    man-pages
+    man-pages-posix
     mdformat
     mkvtoolnix
     mosh
     mupdf
     nasm
-    neovim
     nil
     nixfmt
+    openssh
     opus-tools
     pandoc
     patchelf
     poppler-utils
     pre-commit
+    procps
+    psmisc
     qpdf
+    ripgrep
     rsgain
+    rsync
     shellcheck
     shfmt
+    silver-searcher
     sox
     statix
     stylua
     texliveFull
+    tree
     tree-sitter
     usbutils
     vscode-langservers-extracted

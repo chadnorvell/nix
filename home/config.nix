@@ -12,10 +12,10 @@ let
   cp = path: builtins.readFile "${nixDir.home}/${path}";
   ln = path: config.lib.file.mkOutOfStoreSymlink "${nixDir.home}/${path}";
 
-  bat = "${pkgs.bat}/bin/bat";
-  eza = "${pkgs.eza}/bin/eza";
-  gum = "${pkgs.gum}/bin/gum";
-  nvim = "${pkgs.neovim}/bin/nvim";
+  bat = lib.getExe pkgs.bat;
+  eza = lib.getExe pkgs.eza;
+  gum = lib.getExe pkgs.gum;
+  nvim = lib.getExe pkgs.neovim;
   trash-put = "${pkgs.trash-cli}/bin/trash-put";
 
   gitBasicAliases = {
@@ -272,6 +272,23 @@ in
   programs.delta = {
     enable = true;
     enableGitIntegration = true;
+  };
+
+  programs.bat = {
+    enable = true;
+    config.theme = "base16";
+  };
+
+  programs.btop = {
+    enable = true;
+    settings.color_theme = "onedark";
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+    nix-direnv.enable = true;
   };
 
   programs.neovim = {

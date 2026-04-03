@@ -2,7 +2,6 @@
   lib,
   pkgs,
   user,
-  nixDir,
   ...
 }:
 {
@@ -90,29 +89,6 @@
   environment.sessionVariables = {
     EDITOR = "vim";
   };
-
-  environment.systemPackages = with pkgs; [
-    bat
-    chezmoi
-    curl
-    eza
-    git
-    gum
-    jq
-    man-pages
-    man-pages-posix
-    openssh
-    procps
-    psmisc
-    ripgrep
-    rsync
-    silver-searcher
-    tmux
-    trash-cli
-    tree
-    vim
-    yazi
-  ];
 
   programs.fish.enable = true;
 

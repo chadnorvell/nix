@@ -4,11 +4,19 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  environment.systemPackages = with pkgs; [
+    clinfo
+  ];
+
+  environment.variables.RUSTICL_ENABLE = "radeonsi";
+
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
       mesa.opencl
+      rocmPackages.clr.icd
+      rocmPackages.rocminfo
     ];
   };
 
@@ -17,6 +25,7 @@
   services.fwupd.enable = true;
   services.power-profiles-daemon.enable = true;
   services.upower.enable = true;
+  services.xserver.videoDrivers = [ "amdgpu" ];
 
   services.logind = {
     settings = {
@@ -35,6 +44,4 @@
       HibernateDelaySec = "240min";
     };
   };
-
-  environment.variables.RUSTICL_ENABLE = "radeonsi";
 }

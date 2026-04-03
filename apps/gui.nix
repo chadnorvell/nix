@@ -45,6 +45,13 @@
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-color-emoji
+    source-code-pro
+    source-han-code-jp
+    source-han-mono
+    source-han-sans
+    source-han-serif
+    source-sans
+    source-serif
     ubuntu-sans
     ubuntu-sans-mono
   ];
