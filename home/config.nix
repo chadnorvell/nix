@@ -291,6 +291,84 @@ in
     nix-direnv.enable = true;
   };
 
+  programs.emacs = {
+    enable = true;
+    package = pkgs.emacs-pgtk;
+
+    extraPackages = epkgs: with epkgs; [
+      treesit-grammars.with-all-grammars
+      compat
+
+      # finding/completion
+      vertico
+      marginalia
+      orderless
+      consult
+      consult-dir
+      embark
+      embark-consult
+      corfu
+      cape
+      affe
+      nerd-icons-corfu
+
+      # navigation/editing
+      avy
+      puni
+      wgrep
+      emmet-mode
+
+      # bindings
+      evil
+      evil-collection
+      evil-surround
+      general
+
+      # ui
+      doom-themes
+      doom-modeline
+      eldoc-box
+      nerd-icons
+
+      # env
+      envrc
+      inheritenv
+
+      # code
+      treesit-auto
+      #flycheck
+      apheleia
+      eglot-booster
+      consult-eglot
+      consult-eglot-embark
+
+      # tools
+      magit
+      dirvish
+      vterm
+
+      # modes
+      elixir-ts-mode
+      fish-mode
+      heex-ts-mode
+      json5-ts-mode
+      just-ts-mode
+      markdown-ts-mode
+      nix-mode
+      nix-ts-mode
+      svelte-mode
+    ];
+  };
+
+  # services.emacs = {
+  #   enable = true;
+  #   package = pkgs.emacs-pgtk;
+  # };
+
+  xdg.configFile."emacs/early-init.el".source = ln "emacs/early-init.el";
+  xdg.configFile."emacs/init.el".source = ln "emacs/init.el";
+  xdg.configFile."emacs/lisp".source = ln "emacs/lisp";
+
   programs.neovim = {
     enable = true;
 

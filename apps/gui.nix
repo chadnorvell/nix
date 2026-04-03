@@ -42,6 +42,7 @@
     iosevka
     libertine
     nerd-fonts.iosevka
+    nerd-fonts.symbols-only
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-color-emoji

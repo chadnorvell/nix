@@ -12,11 +12,10 @@
     fd
     ffmpeg
     file
-    fish-lsp
     flac
     fzf
+    gdb
     gcc
-    gh
     glow
     groff
     hexyl
@@ -24,42 +23,30 @@
     imagemagick
     jq
     just
-    kdlfmt
+    lldb
     lua
-    lua-language-server
     man-pages
     man-pages-posix
-    mdformat
     mkvtoolnix
     mosh
     mupdf
     nasm
-    nil
-    nixfmt
     openssh
     opus-tools
     pandoc
     patchelf
     poppler-utils
-    pre-commit
     procps
     psmisc
     qpdf
     ripgrep
     rsgain
     rsync
-    shellcheck
-    shfmt
     silver-searcher
     sox
-    statix
-    stylua
     texliveFull
     tree
-    tree-sitter
     usbutils
-    vscode-langservers-extracted
-    yaml-language-server
     yq
     yt-dlp
   ];
