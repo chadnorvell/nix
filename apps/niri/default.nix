@@ -8,8 +8,8 @@
   environment.systemPackages = with pkgs; [
     desktop-file-utils
     gruvbox-plus-icons
-    insync
     libreoffice-fresh
+    meld
     nautilus
     shared-mime-info
     wl-clipboard
@@ -87,12 +87,6 @@
   security.rtkit.enable = true;
 
   programs.dconf.enable = true;
-
-  programs._1password.enable = true;
-  programs._1password-gui = {
-    enable = true;
-    polkitPolicyOwners = [ user.name ];
-  };
 
   services.displayManager.dms-greeter = {
     enable = true;

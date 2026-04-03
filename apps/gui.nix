@@ -20,7 +20,6 @@
     inkscape
     kicad
     kitty
-    meld
     mpv
     obsidian
     openscad
