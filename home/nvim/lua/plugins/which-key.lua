@@ -72,6 +72,7 @@ return {
       },
 
       { "<leader>q", group = "quit" },
+      { "<leader>qq", vim.cmd.qa, desc = "this" },
       { "<leader>qa", vim.cmd.qa, desc = "all" },
 
       { "<leader>u", group = "ui" },

@@ -15,7 +15,9 @@ vim.opt.smartcase = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.timeoutlen = 300
+vim.opt.swapfile = false
 vim.opt.undofile = true
+vim.opt.undodir = vim.fn.expand("~/.local/state/nvim/undo//")
 vim.opt.updatetime = 250
 vim.o.sessionoptions =
   "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
@@ -85,5 +87,35 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.schedule(function()
   vim.opt.clipboard = "unnamedplus"
 end)
+
+-- Autosave on normal mode or blur
+local autosave_ignore_ft = { "oil", "TelescopePrompt" }
+
+vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost" }, {
+  callback = function()
+    if not vim.bo.modified then
+      return
+    end
+
+    if vim.tbl_contains(autosave_ignore_ft, vim.bo.filetype) then
+      return
+    end
+
+    if vim.bo.buftype ~= "" then
+      return
+    end
+
+    vim.cmd("silent! update")
+  end,
+})
+
+-- Reload changed files
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained" }, {
+  callback = function()
+    if vim.fn.getcmdwintype() == "" then
+      vim.cmd("checktime")
+    end
+  end,
+})
 
 vim.diagnostic.config({ signs = true })

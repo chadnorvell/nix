@@ -16,6 +16,8 @@ let
   eza = lib.getExe pkgs.eza;
   gum = lib.getExe pkgs.gum;
   nvim = lib.getExe pkgs.neovim;
+  nvim-qt = lib.getExe pkgs.neovim-qt;
+  neovide = lib.getExe pkgs.neovide;
   trash-put = "${pkgs.trash-cli}/bin/trash-put";
 
   gitBasicAliases = {
@@ -150,6 +152,8 @@ in
       lt = "{ lvl=\"\${1:-2}\"; [ $# -gt 0 ] && shift; ${eza} --tree --level=\"\$lvl\" \"\$@\"; }";
       mkcd = "mkdir $@ && cd $@";
       nrb = "{ cmd=\"\${1:-switch}\"; shift; sudo nixos-rebuild \"$cmd\" --impure --flake \"${nixDir.root}\" \"$@\"; }";
+      nvg = "nohup ${neovide} \"\${1:-.}\" >/dev/null 2>&1 & disown";
+      nvgqt = "nohup ${nvim-qt} \"\${1:-.}\" >/dev/null 2>&1 & disown";
       nxd = "nix develop";
       nxs = "nix-shell";
       v = "{ [ -d \"$1\" ] && ${eza} --long \"$1\" || { [ -f \"$1\" ] && ${bat} \"$1\" || echo \"Error: Path '$1' is neither a directory nor a file\"; }; }";
@@ -167,69 +171,39 @@ in
       cdl = "cd $argv && ${eza} --long";
       cdla = "cd $argv && ${eza} --long --all";
       cdls = "cd $argv && ${eza} --tree --level=2";
+      mkcd = "mkdir $argv && cd $argv";
+      nvg = "set -l p $argv .; ${neovide} $p[1] &>/dev/null &; disown";
+      nvgqt = "set -l p $argv .; ${nvim-qt} $p[1] &>/dev/null &; disown";
 
       lt = ''
-        if test (count $argv) -eq 0
-            ${eza} --tree --level=2
-        else if test (count $argv) -eq 1
-            ${eza} --tree --level=$argv
-        else
-            ${eza} --tree --level=$argv[1] $argv[2..-1]
-        end
-      '';
-
-      mkcd = "mkdir $argv && cd $argv";
-
-      nrb = ''
-        set command $argv[1]
-        set args $argv[2..-1]
-
-        if test -z "$command"
-            set command switch
-        end
-
-        sudo nixos-rebuild $command --impure --flake "${nixDir.root}" $args
-      '';
-
-      nxd = ''
-        argparse 'c/command=' -- $argv
-        or return
-
-        set -x IN_FISH_SUBSHELL 1
-
-        if set -ql _flag_c
-            nix develop $argv --command fish -c $_flag_c[1]
-        else
-            nix develop $argv --command fish
-        end
-      '';
-
-      nxs = ''
-        argparse 'c/command=' -- $argv
-        or return
-
-        set -x IN_FISH_SUBSHELL 1
-
-        if set -ql _flag_c
-            nix-shell $argv --command fish -c $_flag_c[1]
-        else
-            nix-shell $argv --command fish
-        end
+        set -q argv[1]; or set argv 2
+        ${eza} --tree --level=$argv[1] $argv[2..]
       '';
 
       v = ''
-        if test -d $argv[1]
-            ${eza} --long $argv[1]
-        else if test -f $argv[1]
-            ${bat} $argv[1]
-        else
-            echo "Error: Path '$argv[1]' is neither a directory nor a file."
-        end
+        set -l p $argv[1]
+        set -l cmd (test -d $p; and echo ${eza} --long; or test -f $p; and echo ${bat})
+        if test -n "$cmd"; $cmd $p; else; echo "Error: '$p' is neither a file nor a directory"; end
       '';
+
+      nrb = "set -q argv[1]; or set argv switch; sudo nixos-rebuild $argv[1] --impure --flake \"${nixDir.root}\" $argv[2..]";
+
+      nxd = ''
+        argparse 'c/command=' -- $argv; or return
+        IN_FISH_SUBSHELL=1 nix develop $argv --command fish (set -q _flag_c; and echo -c $_flag_c)
+      '';
+
+      nxs = ''
+        argparse 'c/command=' -- $argv; or return
+        IN_FISH_SUBSHELL=1 nix-shell $argv --command fish (set -q _flag_c; and echo -c $_flag_c)
+      '';
+
     };
   };
 
   xdg.configFile."fish/functions/fish_prompt.fish".source = ln "fish/functions/fish_prompt.fish";
+
+  xdg.configFile."kitty/kitty.conf".source = ln "kitty/kitty.conf";
 
   programs.zoxide = {
     enable = true;
@@ -290,84 +264,6 @@ in
     enableFishIntegration = true;
     nix-direnv.enable = true;
   };
-
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs-pgtk;
-
-    extraPackages = epkgs: with epkgs; [
-      treesit-grammars.with-all-grammars
-      compat
-
-      # finding/completion
-      vertico
-      marginalia
-      orderless
-      consult
-      consult-dir
-      embark
-      embark-consult
-      corfu
-      cape
-      affe
-      nerd-icons-corfu
-
-      # navigation/editing
-      avy
-      puni
-      wgrep
-      emmet-mode
-
-      # bindings
-      evil
-      evil-collection
-      evil-surround
-      general
-
-      # ui
-      doom-themes
-      doom-modeline
-      eldoc-box
-      nerd-icons
-
-      # env
-      envrc
-      inheritenv
-
-      # code
-      treesit-auto
-      #flycheck
-      apheleia
-      eglot-booster
-      consult-eglot
-      consult-eglot-embark
-
-      # tools
-      magit
-      dirvish
-      vterm
-
-      # modes
-      elixir-ts-mode
-      fish-mode
-      heex-ts-mode
-      json5-ts-mode
-      just-ts-mode
-      markdown-ts-mode
-      nix-mode
-      nix-ts-mode
-      svelte-mode
-    ];
-  };
-
-  # services.emacs = {
-  #   enable = true;
-  #   package = pkgs.emacs-pgtk;
-  # };
-
-  xdg.configFile."emacs/early-init.el".source = ln "emacs/early-init.el";
-  xdg.configFile."emacs/init.el".source = ln "emacs/init.el";
-  xdg.configFile."emacs/lisp".source = ln "emacs/lisp";
 
   programs.neovim = {
     enable = true;

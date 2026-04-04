@@ -11,7 +11,6 @@
     cmake-language-server
     delta
     direnv
-    emacs-lsp-booster
     eslint
     eza
     fish-lsp
@@ -22,13 +21,14 @@
     kdlfmt
     lua-language-server
     mdformat
+    neovide
     neovim
+    neovim-qt
     neovim-remote
     nil
     nix-direnv
     nixfmt
     pre-commit
-    rassumfrassum
     ruff
     shellcheck
     shfmt
@@ -47,7 +47,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     users.${user.name} = {
-      imports = [ (import ./config.nix { inherit user nixDir; }) ];
+      imports = [ (import ./user.nix { inherit user nixDir; }) ];
       home.username = user.name;
       home.homeDirectory = user.homeDirectory;
     };
