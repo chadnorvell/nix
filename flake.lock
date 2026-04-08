@@ -53,11 +53,28 @@
         "type": "github"
       }
     },
+    "nixpkgs-fork": {
+      "locked": {
+        "lastModified": 1775530140,
+        "narHash": "sha256-WUCGHpjMUP9jsoSzzy9E3VvDgCly6X8keV5vxsFsIHE=",
+        "owner": "chadnorvell",
+        "repo": "nixpkgs",
+        "rev": "beb44b0570e29ed2d1b0a576c66681f50991eaf5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chadnorvell",
+        "ref": "current",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-fork": "nixpkgs-fork"
       }
     }
   },

@@ -78,6 +78,36 @@ return {
       { "<leader>u", group = "ui" },
       { "<leader>uc", group = "color scheme" },
 
+      { "<leader>v", group = "direnv " },
+      {
+        "<leader>va",
+        function()
+          require("direnv").allow_direnv()
+        end,
+        desc = "allow",
+      },
+      {
+        "<leader>vd",
+        function()
+          require("direnv").deny_direnv()
+        end,
+        desc = "deny",
+      },
+      {
+        "<leader>ve",
+        function()
+          require("direnv").edit_envrc()
+        end,
+        desc = "edit",
+      },
+      {
+        "<leader>vr",
+        function()
+          require("direnv").check_direnv()
+        end,
+        desc = "reload",
+      },
+
       { "<leader>H", vim.cmd.noh, desc = "clear highlight" },
     },
   },

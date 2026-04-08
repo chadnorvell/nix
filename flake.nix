@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-fork.url = "github:chadnorvell/nixpkgs/current";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     home-manager = {
@@ -13,12 +14,14 @@
     {
       self,
       nixpkgs,
+      nixpkgs-fork,
       nixos-hardware,
       home-manager,
       ...
     }@inputs:
     let
       inherit (self) outputs;
+      system = "x86_64-linux";
 
       user = {
         name = "chad";
@@ -34,7 +37,7 @@
       hostConfig =
         extraModules:
         nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+          inherit system;
 
           specialArgs = {
             inherit
@@ -46,6 +49,7 @@
           };
 
           modules = [
+            (import ./fork.nix { inherit system nixpkgs-fork; })
             ./base.nix
             home-manager.nixosModules.home-manager
             ./home

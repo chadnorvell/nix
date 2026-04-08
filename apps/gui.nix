@@ -1,8 +1,14 @@
 { pkgs, ... }:
 {
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
   environment.systemPackages = with pkgs; [
     blender
     calibre
+    capacities
     chromium
     darktable
     discord

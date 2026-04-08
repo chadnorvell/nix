@@ -86,6 +86,10 @@ let
   ];
 in
 {
+  imports = [
+    (import ./desktop.nix { inherit lib pkgs nixDir; })
+  ];
+
   programs.home-manager.enable = true;
   home.stateVersion = "25.11";
   home.sessionPath = addToPath;
@@ -110,22 +114,6 @@ in
     publicShare = "${homeDirectory}/public";
     templates = "${homeDirectory}/docs/templates";
     videos = "${homeDirectory}/media/videos";
-  };
-
-  xdg.mimeApps = {
-    enable = true;
-
-    defaultApplications = {
-      "application/pdf" = [ "org.kde.okular.desktop" ];
-      "image/jpeg" = [ "org.kde.gwenview.desktop" ];
-      "image/png" = [ "org.kde.gwenview.desktop" ];
-      "inode/directory" = [ "org.kde.dolphin.desktop" ];
-      "text/html" = [ "google-chrome.desktop" ];
-      "x-scheme-handler/http" = [ "google-chrome.desktop" ];
-      "x-scheme-handler/https" = [ "google-chrome.desktop" ];
-      "x-scheme-handler/about" = [ "google-chrome.desktop" ];
-      "x-scheme-handler/unknown" = [ "google-chrome.desktop" ];
-    };
   };
 
   home.shellAliases = {
