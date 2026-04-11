@@ -1,4 +1,8 @@
-{ lib, pkgs, nixDir }:
+{
+  lib,
+  pkgs,
+  nixDir,
+}:
 let
   google-chrome = lib.getExe pkgs.google-chrome;
 
@@ -98,7 +102,6 @@ let
     });
 
   svgIcons = [
-    "cxn-capacities.svg"
     "cxn-google-chat.svg"
     "cxn-google-messages.svg"
     "cxn-whatsapp.svg"
@@ -140,18 +143,6 @@ in
     googleChromeForProfile googleChromePersonalProfile
     // googleChromeForProfile googleChromeCalcbaseProfile
     // lib.attrsets.mapAttrs' makeGoogleChromePwa googleChromePwas;
-    # // {
-    #   Capacities = {
-    #     name = "Capacities";
-    #     type = "Application";
-    #     terminal = false;
-    #     icon = "cxn-capacities";
-    #     exec = "/home/chad/.pkg/appimage/Capacities-1.60.1.AppImage --no-sandbox %U";
-    #     categories = [ "Office" ];
-    #     settings.StartupWMClass = "Capacities";
-    #     mimeType = [ "x-schema-handler/capacities" ];
-    #   };
-    # };
 
   xdg.mimeApps = {
     enable = true;
@@ -162,12 +153,11 @@ in
       "image/png" = [ "org.kde.gwenview.desktop" ];
       "inode/directory" = [ "org.kde.dolphin.desktop" ];
       "text/html" = [ "google-chrome.desktop" ];
+      "x-scheme-handler/capacities" = [ "Capacities.desktop" ];
       "x-scheme-handler/http" = [ "google-chrome.desktop" ];
       "x-scheme-handler/https" = [ "google-chrome.desktop" ];
       "x-scheme-handler/about" = [ "google-chrome.desktop" ];
       "x-scheme-handler/unknown" = [ "google-chrome.desktop" ];
-
-      "x-scheme-handler/capacities" = [ "Capacities.desktop" ];
     };
   };
 

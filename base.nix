@@ -21,10 +21,6 @@
     allowUnfree = true;
   };
 
-  nixpkgs.overlays = [
-    (import ./utils.nix)
-  ];
-
   documentation = {
     enable = true;
 
@@ -120,4 +116,15 @@
       hplipWithPlugin
     ];
   };
+
+  services.xserver = {
+    enable = true;
+
+    xkb = {
+      layout = "eu";
+      variant = "";
+    };
+  };
+
+  console.useXkbConfig = true;
 }

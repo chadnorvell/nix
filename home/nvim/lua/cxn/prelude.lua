@@ -24,6 +24,7 @@ vim.o.sessionoptions =
 vim.g.have_nerd_font = true
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.diagnostic.config({ signs = true })
 
 -- Use spaces for indentation, defaulting to 4 spaces
 vim.opt.shiftwidth = 4
@@ -60,37 +61,15 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
   end,
 })
 
-vim.filetype.add({ extension = { fidl = "fidl" } })
-
--- TODO: This might be unnecessary in neovim 0.12
-vim.api.nvim_create_autocmd("FileType", {
-  callback = function(event)
-    -- Wrap vim.treesitter.start() in pcall to avoid errors if a parser is missing or broken
-    if pcall(vim.treesitter.start, event.buf) then
-      -- Enable Treesitter highlighting (default behavior of vim.treesitter.start())
-
-      -- Optional: Enable Treesitter folding
-      -- vim.wo[event.buf].foldmethod = "expr"
-      -- vim.wo[event.buf].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-
-      -- Optional: Enable Treesitter indentation
-      vim.bo[event.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-    else
-      -- Fallback to default syntax highlighting if Treesitter can't start
-      vim.bo[event.buf].syntax = "on"
-    end
-  end,
-})
-
 -- Share the system clipboard
 -- Loaded async because otherwise it can increase startup time
 vim.schedule(function()
   vim.opt.clipboard = "unnamedplus"
 end)
 
--- Autosave on normal mode or blur
 local autosave_ignore_ft = { "oil", "TelescopePrompt" }
 
+-- Autosave on normal mode or blur
 vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost" }, {
   callback = function()
     if not vim.bo.modified then
@@ -117,5 +96,3 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained" }, {
     end
   end,
 })
-
-vim.diagnostic.config({ signs = true })

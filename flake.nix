@@ -49,7 +49,7 @@
           };
 
           modules = [
-            (import ./fork.nix { inherit system nixpkgs-fork; })
+            (import ./overlays.nix { inherit system nixpkgs-fork; })
             ./base.nix
             home-manager.nixosModules.home-manager
             ./home

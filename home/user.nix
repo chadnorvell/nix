@@ -26,6 +26,7 @@ let
     aca = "!f() { git add -A && git commit --amend; }; f";
     acaf = "!f() { git add -A && git commit --amend --no-edit; }; f";
     acapf = "!f() { git add -A && git commit --amend --no-edit && git push --force; }; f";
+    # ax = "";
     b = "branch";
     c = "commit";
     ca = "commit --amend";
@@ -35,8 +36,9 @@ let
     d = "diff";
     ds = "diff --staged";
     g = "clone";
-    h = "checkout";
-    hb = "checkout -b";
+    # gg = "";
+    k = "checkout";
+    kb = "checkout -b";
     pu = "pull";
     puf = "pull --rebase";
     r = "rebase";
@@ -47,21 +49,16 @@ let
     s = "status";
     up = "push";
     upf = "push --force";
-    x = "!f() { git branch --merged | grep -v \"^\*\\|main\" | xargs -n 1 git branch -d; }; f";
-    z = "stash";
-    zz = "stash -u";
-    za = "stash apply";
-    zd = "stash drop";
-    zl = "stash list";
-    zp = "stash pop";
-    zs = "stash show";
+    x = "stash";
+    xx = "stash -u";
+    xa = "stash apply";
+    xd = "stash drop";
+    xl = "stash list";
+    xp = "stash pop";
+    xs = "stash show";
 
-    l = "log --oneline -10";
-    ll = "log --oneline";
-
-    lm = "log main..HEAD --oneline -10";
-    llm = "log main..HEAD --oneline";
-
+    l = "!f() { git log --oneline -\${1:-10}; }; f";
+    lm = "!f() { log main..HEAD --oneline -\${1:-10}; }; f";
     lv = "log";
     lvm = "log main..HEAD";
 
@@ -134,6 +131,7 @@ in
     enable = true;
 
     shellAliases = {
+      c = "z \"~/Δ/\${1:-main}\"";
       cdl = "cd $@ && ${eza} --long";
       cdla = "cd $@ && ${eza} --long --all";
       cdls = "cd $@ && ${eza} --tree --level=2";
@@ -156,36 +154,92 @@ in
     '';
 
     functions = {
-      cdl = "cd $argv && ${eza} --long";
-      cdla = "cd $argv && ${eza} --long --all";
-      cdls = "cd $argv && ${eza} --tree --level=2";
-      mkcd = "mkdir $argv && cd $argv";
-      nvg = "set -l p $argv .; ${neovide} $p[1] &>/dev/null &; disown";
-      nvgqt = "set -l p $argv .; ${nvim-qt} $p[1] &>/dev/null &; disown";
+      c = {
+        body = "set -l wt $argv main; z ~/Δ/$wt[1]";
+        description = "cd to ~/Δ/[WORKTREE | main]";
+      };
+      cdl = {
+        body = "cd $argv && ${eza} --long";
+        description = "cd && eza -l";
+        wraps = "cd";
+      };
+      cdla = {
+        body = "cd $argv && ${eza} --long --all";
+        description = "cd && eza -la";
+        wraps = "cd";
+      };
+      cdls = {
+        body = "cd $argv && ${eza} --tree --level=2";
+        description = "cd && eza -T -L 2";
+        wraps = "cd";
+      };
+      mkcd = {
+        body = "mkdir $argv && cd $argv";
+        description = "mkdir && cd";
+        wraps = "mkdir";
+      };
+      nvg = {
+        body = "set -l p $argv .; ${neovide} $p[1] &>/dev/null &; disown";
+        description = "launch neovide";
+        wraps = "neovide";
+      };
+      nvgqt = {
+        body = "set -l p $argv .; ${nvim-qt} $p[1] &>/dev/null &; disown";
+        description = "launch nvim-qt";
+        wraps = "nvim-qt";
+      };
 
-      lt = ''
-        set -q argv[1]; or set argv 2
-        ${eza} --tree --level=$argv[1] $argv[2..]
-      '';
+      lt = {
+        body = ''
+          set -q argv[1]; or set argv 2
+          ${eza} --tree --level=$argv[1] $argv[2..]
+        '';
+        description = "eza -T -L [LEVEL | 2]";
+        wraps = "eza";
+      };
 
-      v = ''
-        set -l p $argv[1]
-        set -l cmd (test -d $p; and echo ${eza} --long; or test -f $p; and echo ${bat})
-        if test -n "$cmd"; $cmd $p; else; echo "Error: '$p' is neither a file nor a directory"; end
-      '';
+      v = {
+        body = ''
+          set -l args $argv .; set -l p $args[1]
+          if test -d $p; ${eza} --long $p
+          else if test -f $p; ${bat} $p
+          else echo "Error: '$p' is neither a directory nor a file"; end
+        '';
+        description = "bat file or eza directory";
+      };
 
-      nrb = "set -q argv[1]; or set argv switch; sudo nixos-rebuild $argv[1] --impure --flake \"${nixDir.root}\" $argv[2..]";
+      nrb = {
+        body = ''
+          set -q argv[1]; or set argv switch
+          sudo nixos-rebuild $argv[1] --impure --flake "${nixDir.root}" $argv[2..]
+        '';
+        description = "nixos-rebuild --flake ${nixDir.root}";
+        wraps = "nixos-rebuild";
+      };
 
-      nxd = ''
-        argparse 'c/command=' -- $argv; or return
-        IN_FISH_SUBSHELL=1 nix develop $argv --command fish (set -q _flag_c; and echo -c $_flag_c)
-      '';
+      nxd = {
+        body = ''
+          argparse 'c/command=' -- $argv; or return
+          IN_FISH_SUBSHELL=1 nix develop $argv --command fish (set -q _flag_c; and echo -c $_flag_c)
+        '';
+        description = "nix develop in fish (invoke command with -c COMMAND)";
+        wraps = "nix develop";
+      };
 
-      nxs = ''
-        argparse 'c/command=' -- $argv; or return
-        IN_FISH_SUBSHELL=1 nix-shell $argv --command fish (set -q _flag_c; and echo -c $_flag_c)
-      '';
+      nxs = {
+        body = ''
+          argparse 'c/command=' -- $argv; or return
+          IN_FISH_SUBSHELL=1 nix-shell $argv --command fish (set -q _flag_c; and echo -c $_flag_c)
+        '';
+        description = "nix-shell in fish (invoke command with -c COMMAND)";
+        wraps = "nix-shell";
+      };
 
+    };
+
+    completions = {
+      c = "complete -c c -f -a \"(path basename ~/Δ/*/)\"";
+      v = "complete -c v -a \"(__fish_complete_path)\"";
     };
   };
 
@@ -222,6 +276,7 @@ in
 
       alias = gitBasicAliases // {
         del-branches = "!git branch | cut -c 3- | ${gum} choose --no-limit | xargs git branch -D";
+        del-merged = "!f() { git branch --merged | grep -v \"^\*\\|main\" | xargs -n 1 git branch -d; }; f";
         fixup-on = "!git log --oneline | ${gum} choose | awk '{print $1}' | xargs git commit --fixup";
         squash-all = "!f() { git reset $(git commit-tree HEAD^{tree} \"$@\"); }; f";
         sync = "!f() { git checkout main && git pull; }; f";
@@ -255,6 +310,8 @@ in
 
   programs.neovim = {
     enable = true;
+    withPython3 = false;
+    withRuby = false;
 
     initLua = ''
       require("cxn")

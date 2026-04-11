@@ -44,15 +44,6 @@ in
   services.displayManager.plasma-login-manager.enable = true;
   services.desktopManager.plasma6.enable = true;
 
-  services.xserver = {
-    enable = true;
-
-    xkb = {
-      layout = "us";
-      variant = "";
-    };
-  };
-
   security.polkit.enable = true;
   security.rtkit.enable = true;
 
