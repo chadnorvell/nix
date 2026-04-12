@@ -64,15 +64,15 @@
           ./hosts/workstation.nix
         ];
 
-        advaita = hostConfig [
-          ./hosts/advaita.nix
+        mach = hostConfig [
+          ./hosts/mach.nix
           ./hosts/framework.nix
           ./hosts/workstation.nix
           nixos-hardware.nixosModules.framework-16-amd-ai-300-series
         ];
 
-        mazama = hostConfig [
-          ./hosts/mazama.nix
+        lux = hostConfig [
+          ./hosts/lux.nix
           ./hosts/framework.nix
           ./hosts/workstation.nix
           nixos-hardware.nixosModules.framework-amd-ai-300-series

@@ -10,7 +10,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  networking.hostName = "advaita";
+  networking.hostName = "mach";
 
   boot.initrd.availableKernelModules = [
     "nvme"
