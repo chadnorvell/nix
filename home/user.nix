@@ -20,46 +20,53 @@ let
   neovide = lib.getExe pkgs.neovide;
   trash-put = "${pkgs.trash-cli}/bin/trash-put";
 
-  gitBasicAliases = {
-    a = "add -A";
+  gitShellAbbrs = {
+    ga = "git add";
+    gb = "git branch";
+    gc = "git commit";
+    gd = "git diff";
+    gg = "git clone";
+    gk = "git checkout";
+    glv = "git log";
+    gpu = "git pull";
+    gr = "git rebase";
+    gs = "git status";
+    gup = "git push";
+    gx = "git status";
+    gy = "git cherry-pick";
+  };
+
+  gitShellAbbrForBash = lib.mapAttrs (key: value: "${value} $@") gitShellAbbrs;
+
+  gitAliases = {
+    aa = "add -A";
     ac = "!f() { git add -A && git commit \"$@\"; }; f";
     aca = "!f() { git add -A && git commit --amend; }; f";
     acaf = "!f() { git add -A && git commit --amend --no-edit; }; f";
     acapf = "!f() { git add -A && git commit --amend --no-edit && git push --force; }; f";
-    # ax = "";
-    b = "branch";
-    c = "commit";
     ca = "commit --amend";
     caf = "commit --amend --no-edit";
     capf = "!f() { git commit --amend --no-edit && git push --force; }; f";
     cm = "commit -m";
-    d = "diff";
     ds = "diff --staged";
-    g = "clone";
-    # gg = "";
-    k = "checkout";
     kb = "checkout -b";
-    pu = "pull";
     puf = "pull --rebase";
-    r = "rebase";
     ra = "rebase --abort";
     rc = "rebase --continue";
     ri = "rebase --interactive";
     rq = "rebase --autosquash";
-    s = "status";
-    up = "push";
     upf = "push --force";
-    x = "stash";
     xx = "stash -u";
     xa = "stash apply";
     xd = "stash drop";
     xl = "stash list";
     xp = "stash pop";
     xs = "stash show";
+    ya = "cherry-pick --abort";
+    yc = "cherry-pick --continue";
 
     l = "!f() { git log --oneline -\${1:-10}; }; f";
     lm = "!f() { log main..HEAD --oneline -\${1:-10}; }; f";
-    lv = "log";
     lvm = "log main..HEAD";
 
     lt = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'";
@@ -76,7 +83,9 @@ let
     in
     if len > 0 && last == "f" then "g${rest}!" else "g${name}";
 
-  gitAliasToShellAlias = key: value: lib.nameValuePair (gitAliasToShellAliasName key) ("git ${key}");
+  gitAliasesToShellAliases = lib.attrsets.mapAttrs' (
+    key: value: lib.nameValuePair (gitAliasToShellAliasName key) ("git ${key}")
+  ) gitAliases;
 
   addToPath = [
     "${homeDirectory}/.local/bin"
@@ -125,25 +134,23 @@ in
     rm = trash-put;
     rrm = "rm";
   }
-  // lib.attrsets.mapAttrs' gitAliasToShellAlias gitBasicAliases;
+  // gitAliasesToShellAliases;
 
   programs.bash = {
     enable = true;
 
     shellAliases = {
-      c = "z \"~/Δ/\${1:-main}\"";
+      ccd = "\cd $@";
       cdl = "cd $@ && ${eza} --long";
       cdla = "cd $@ && ${eza} --long --all";
       cdls = "cd $@ && ${eza} --tree --level=2";
       lt = "{ lvl=\"\${1:-2}\"; [ $# -gt 0 ] && shift; ${eza} --tree --level=\"\$lvl\" \"\$@\"; }";
       mkcd = "mkdir $@ && cd $@";
       nrb = "{ cmd=\"\${1:-switch}\"; shift; sudo nixos-rebuild \"$cmd\" --impure --flake \"${nixDir.root}\" \"$@\"; }";
-      nvg = "nohup ${neovide} \"\${1:-.}\" >/dev/null 2>&1 & disown";
-      nvgqt = "nohup ${nvim-qt} \"\${1:-.}\" >/dev/null 2>&1 & disown";
       nxd = "nix develop";
       nxs = "nix-shell";
-      v = "{ [ -d \"$1\" ] && ${eza} --long \"$1\" || { [ -f \"$1\" ] && ${bat} \"$1\" || echo \"Error: Path '$1' is neither a directory nor a file\"; }; }";
-    };
+    }
+    // gitShellAbbrForBash;
   };
 
   programs.fish = {
@@ -153,40 +160,43 @@ in
       set fish_greeting
     '';
 
+    shellAbbrs = {
+      ccd = "builtin cd";
+    }
+    // gitShellAbbrs;
+
     functions = {
-      c = {
-        body = "set -l wt $argv main; z ~/Δ/$wt[1]";
-        description = "cd to ~/Δ/[WORKTREE | main]";
-      };
       cdl = {
         body = "cd $argv && ${eza} --long";
         description = "cd && eza -l";
         wraps = "cd";
       };
+
       cdla = {
         body = "cd $argv && ${eza} --long --all";
         description = "cd && eza -la";
         wraps = "cd";
       };
+
       cdls = {
         body = "cd $argv && ${eza} --tree --level=2";
         description = "cd && eza -T -L 2";
         wraps = "cd";
       };
-      mkcd = {
-        body = "mkdir $argv && cd $argv";
-        description = "mkdir && cd";
-        wraps = "mkdir";
+
+      d = {
+        body = "set -l wt $argv main; cd ~/Δ/$wt[1]";
+        description = "cd to ~/Δ/[WORKTREE | main]";
       };
-      nvg = {
-        body = "set -l p $argv .; ${neovide} $p[1] &>/dev/null &; disown";
-        description = "launch neovide";
-        wraps = "neovide";
-      };
-      nvgqt = {
-        body = "set -l p $argv .; ${nvim-qt} $p[1] &>/dev/null &; disown";
-        description = "launch nvim-qt";
-        wraps = "nvim-qt";
+
+      ggg = {
+        body = ''
+          if test (count $argv) -lt 1; echo "Error: Needs a repo URL"; return 1; end
+          set -l url $argv[1]
+          set -l dir (string replace -r '.*/(.*)\.git$' '$1' $url; or string replace -r '.*/' "" $repo_url)
+          if git clone $url; cd $dir; else return 1; end
+        '';
+        description = "git clone && cd";
       };
 
       lt = {
@@ -198,14 +208,10 @@ in
         wraps = "eza";
       };
 
-      v = {
-        body = ''
-          set -l args $argv .; set -l p $args[1]
-          if test -d $p; ${eza} --long $p
-          else if test -f $p; ${bat} $p
-          else echo "Error: '$p' is neither a directory nor a file"; end
-        '';
-        description = "bat file or eza directory";
+      mkcd = {
+        body = "mkdir $argv && cd $argv";
+        description = "mkdir && cd";
+        wraps = "mkdir";
       };
 
       nrb = {
@@ -215,6 +221,18 @@ in
         '';
         description = "nixos-rebuild --flake ${nixDir.root}";
         wraps = "nixos-rebuild";
+      };
+
+      nvg = {
+        body = "set -l p $argv .; ${neovide} $p[1] &>/dev/null &; disown";
+        description = "launch neovide";
+        wraps = "neovide";
+      };
+
+      nvgqt = {
+        body = "set -l p $argv .; ${nvim-qt} $p[1] &>/dev/null &; disown";
+        description = "launch nvim-qt";
+        wraps = "nvim-qt";
       };
 
       nxd = {
@@ -235,10 +253,19 @@ in
         wraps = "nix-shell";
       };
 
+      v = {
+        body = ''
+          set -l args $argv .; set -l p $args[1]
+          if test -d $p; ${eza} --long $p
+          else if test -f $p; ${bat} $p
+          else echo "Error: '$p' is neither a directory nor a file"; return 1; end
+        '';
+        description = "bat file or eza directory";
+      };
     };
 
     completions = {
-      c = "complete -c c -f -a \"(path basename ~/Δ/*/)\"";
+      d = "complete -c d -f -a \"(path basename ~/Δ/*/)\"";
       v = "complete -c v -a \"(__fish_complete_path)\"";
     };
   };
@@ -251,6 +278,8 @@ in
     enable = true;
     enableBashIntegration = true;
     enableFishIntegration = true;
+
+    options = [ "--cmd cd" ];
   };
 
   programs.ssh = {
@@ -274,7 +303,7 @@ in
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
 
-      alias = gitBasicAliases // {
+      alias = gitAliases // {
         del-branches = "!git branch | cut -c 3- | ${gum} choose --no-limit | xargs git branch -D";
         del-merged = "!f() { git branch --merged | grep -v \"^\*\\|main\" | xargs -n 1 git branch -d; }; f";
         fixup-on = "!git log --oneline | ${gum} choose | awk '{print $1}' | xargs git commit --fixup";
