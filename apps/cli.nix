@@ -6,6 +6,7 @@
     cifs-utils
     clang
     clang-tools
+    claude-code
     curl
     dust
     fastfetch
