@@ -8,7 +8,6 @@
   environment.systemPackages = with pkgs; [
     blender
     calibre
-    capacities
     chromium
     darktable
     discord

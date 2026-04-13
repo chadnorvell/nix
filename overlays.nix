@@ -12,7 +12,7 @@ in
   nixpkgs.overlays = [
     (final: prev: {
       # These packages will be overridden by the fork
-      inherit (forkPkgs) capacities;
+      # inherit (forkPkgs) ___;
 
       # Utility functions made available to the rest of the config
       lib' = (prev.lib' or { }) // {

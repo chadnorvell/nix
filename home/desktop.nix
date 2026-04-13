@@ -153,7 +153,6 @@ in
       "image/png" = [ "org.kde.gwenview.desktop" ];
       "inode/directory" = [ "org.kde.dolphin.desktop" ];
       "text/html" = [ "google-chrome.desktop" ];
-      "x-scheme-handler/capacities" = [ "Capacities.desktop" ];
       "x-scheme-handler/http" = [ "google-chrome.desktop" ];
       "x-scheme-handler/https" = [ "google-chrome.desktop" ];
       "x-scheme-handler/about" = [ "google-chrome.desktop" ];
