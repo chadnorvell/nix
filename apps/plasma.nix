@@ -1,4 +1,4 @@
-{ pkgs, user, ... }:
+{ pkgs, ... }:
 let
   systemPkgs = with pkgs; [
     libreoffice-qt-fresh

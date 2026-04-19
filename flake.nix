@@ -61,20 +61,18 @@
       nixosConfigurations = {
         sunyata = hostConfig [
           ./hosts/sunyata.nix
-          ./hosts/workstation.nix
+          ./apps/workstation.nix
         ];
 
         mach = hostConfig [
           ./hosts/mach.nix
-          ./hosts/framework.nix
-          ./hosts/workstation.nix
+          ./apps/workstation.nix
           nixos-hardware.nixosModules.framework-16-amd-ai-300-series
         ];
 
         lux = hostConfig [
           ./hosts/lux.nix
-          ./hosts/framework.nix
-          ./hosts/workstation.nix
+          ./apps/workstation.nix
           nixos-hardware.nixosModules.framework-amd-ai-300-series
         ];
       };

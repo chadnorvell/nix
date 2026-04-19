@@ -1,29 +1,33 @@
-{ pkgs, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+  hardware.bluetooth.enable = true;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  environment.systemPackages = with pkgs; [
-    clinfo
+  boot.initrd.availableKernelModules = [
+    "nvme"
+    "xhci_pci"
+    "thunderbolt"
+    "usbhid"
+    "usb_storage"
+    "sd_mod"
   ];
 
-  environment.variables.RUSTICL_ENABLE = "radeonsi";
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      mesa.opencl
-      rocmPackages.clr.icd
-      rocmPackages.rocminfo
-    ];
-  };
-
-  hardware.bluetooth.enable = true;
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-amd" ];
+  boot.extraModulePackages = [ ];
 
   services.upower.enable = true;
-  services.xserver.videoDrivers = [ "amdgpu" ];
 
   services.logind = {
     settings = {
