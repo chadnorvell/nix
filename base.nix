@@ -21,6 +21,24 @@
     allowUnfree = true;
   };
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      # Utility functions made available to the rest of the config
+      lib' = (prev.lib' or { }) // {
+        writeShellScriptBin =
+          name: script:
+          let
+            rootDir = prev.writeShellScriptBin name script;
+          in
+          {
+            inherit name rootDir;
+            binDir = "${rootDir}/bin";
+            binFile = "${rootDir}/bin/${name}";
+          };
+      };
+    })
+  ];
+
   documentation = {
     enable = true;
 

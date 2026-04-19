@@ -21,12 +21,11 @@ let
   ];
 in
 {
-  imports = [
-    (import ./desktop.nix { inherit lib pkgs nixDir; })
+  home.packages = with pkgs; [
+    neovim-qt
+    neovide
   ];
 
-  programs.home-manager.enable = true;
-  home.stateVersion = "25.11";
   home.sessionPath = addToPath;
 
   systemd.user.sessionVariables = {

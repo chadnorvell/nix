@@ -1,10 +1,7 @@
-{
-  lib,
-  pkgs,
-  nixDir,
-}:
+{ nixDir }:
+{ lib, pkgs, ... }:
 let
-  google-chrome = lib.getExe pkgs.google-chrome;
+  google-chrome = "google-chrome";
 
   googleChromePersonalProfile = {
     name = "Default";

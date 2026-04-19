@@ -4,38 +4,36 @@
     android-tools
     ansifilter
     cifs-utils
-    clang
-    clang-tools
     claude-code
     curl
+    direnv
     dust
+    eza
     fastfetch
     fd
     ffmpeg
     file
     flac
     fzf
-    gdb
-    gcc
+    gh
+    git
+    git-lfs
     glow
     groff
+    gum
     hexyl
     htop
     imagemagick
     jq
-    just
-    lldb
-    lua
     man-pages
     man-pages-posix
+    mdformat
     mkvtoolnix
     mosh
     mupdf
-    nasm
     openssh
     opus-tools
     pandoc
-    patchelf
     poppler-utils
     procps
     psmisc
@@ -46,8 +44,12 @@
     silver-searcher
     sox
     texliveFull
+    tmux
+    trash-cli
     tree
+    tree-sitter
     usbutils
+    vim
     yq
     yt-dlp
   ];

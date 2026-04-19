@@ -1,22 +1,16 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-fork.url = "github:chadnorvell/nixpkgs/current";
+    # nixpkgs-fork.url = "github:chadnorvell/nixpkgs/current";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-
-    home-manager = {
-      url = "github:nix-community/home-manager/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      nixpkgs-fork,
+      # nixpkgs-fork,
       nixos-hardware,
-      home-manager,
       ...
     }@inputs:
     let
@@ -29,30 +23,18 @@
         homeDirectory = "/home/chad";
       };
 
-      nixDir = {
-        root = "${user.homeDirectory}/nix";
-        home = "${user.homeDirectory}/nix/home";
-      };
-
       hostConfig =
         extraModules:
         nixpkgs.lib.nixosSystem {
           inherit system;
 
           specialArgs = {
-            inherit
-              inputs
-              outputs
-              user
-              nixDir
-              ;
+            inherit inputs outputs user;
           };
 
           modules = [
-            (import ./overlays.nix { inherit system nixpkgs-fork; })
+            # (import ./fork.nix { inherit system nixpkgs-fork; })
             ./base.nix
-            home-manager.nixosModules.home-manager
-            ./home
           ]
           ++ extraModules;
         };
@@ -76,5 +58,22 @@
           nixos-hardware.nixosModules.framework-amd-ai-300-series
         ];
       };
+
+      devShells.${system} =
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              fish-lsp
+              lua-language-server
+              nil
+              nixfmt
+              statix
+              stylua
+            ];
+          };
+        };
     };
 }
