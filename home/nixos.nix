@@ -1,6 +1,20 @@
-{ nixDir }:
-{ lib, pkgs, ... }:
+{ user, nixDir }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
+  ln = pkgs.lib'.ln;
+  ln' = pkgs.lib'.ln';
+
+  addToPath = [
+    "${user.homeDirectory}/.local/bin"
+  ];
+
+  homeDirectory = user.homeDirectory;
+
   google-chrome = "google-chrome";
 
   googleChromePersonalProfile = {
@@ -134,6 +148,36 @@ let
   );
 in
 {
+  home.packages = with pkgs; [
+    neovim-qt
+    neovide
+  ];
+
+  home.sessionPath = addToPath;
+
+  systemd.user.sessionVariables = {
+    EDITOR = "nvim";
+    MAKEFLAGS = "-j20";
+    PATH = lib.strings.concatStringsSep ":" addToPath + ":$PATH";
+  };
+
+  xdg.configFile =
+    ln' "fish/conf.d/nixos" "fish/conf.d" [ "abbr-nixos.fish" ] // ln "kitty" [ "kitty.conf" ];
+
+  xdg.userDirs = {
+    enable = true;
+    setSessionVariables = true;
+    createDirectories = true;
+    desktop = "${homeDirectory}/top";
+    documents = "${homeDirectory}/docs";
+    download = "${homeDirectory}/inbox";
+    music = "${homeDirectory}/media/music";
+    pictures = "${homeDirectory}/media/images";
+    publicShare = "${homeDirectory}/public";
+    templates = "${homeDirectory}/docs/templates";
+    videos = "${homeDirectory}/media/videos";
+  };
+
   home.file = copySvgIcons // copyHicolorIcons;
 
   xdg.desktopEntries =

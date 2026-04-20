@@ -38,6 +38,13 @@
           ]
           ++ extraModules;
         };
+
+      devShellSystems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+
+      forAllDevShellSystems = f: nixpkgs.lib.genAttrs devShellSystems (system: f system);
     in
     {
       nixosConfigurations = {
@@ -60,7 +67,8 @@
         ];
       };
 
-      devShells.${system} =
+      devShells = forAllDevShellSystems (
+        system:
         let
           pkgs = import nixpkgs { inherit system; };
         in
@@ -75,6 +83,7 @@
               stylua
             ];
           };
-        };
+        }
+      );
     };
 }

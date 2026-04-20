@@ -6,29 +6,22 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
   };
 
   outputs =
-    inputs@{
+    {
       nixpkgs,
       home-manager,
-      plasma-manager,
       ...
     }:
     let
-      system = "x86_64-linux";
+      system = "aarch64-darwin";
       pkgs = import nixpkgs { inherit system; };
 
       user = {
         name = "chad";
         description = "Chad Norvell";
-        homeDirectory = "/home/chad";
+        homeDirectory = "/Users/chad";
       };
 
       nixDir = {
@@ -39,10 +32,10 @@
     {
       homeConfigurations.${user.name} = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+
         modules = [
-          inputs.plasma-manager.homeModules.plasma-manager
-          (import ./home.nix { inherit user nixDir; })
-          (import ./nixos.nix { inherit user nixDir; })
+          (import ../home.nix { inherit user nixDir; })
+          ./darwin.nix
         ];
       };
     };
