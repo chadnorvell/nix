@@ -44,6 +44,7 @@
         sunyata = hostConfig [
           ./hosts/sunyata.nix
           ./apps/workstation.nix
+          ./apps/steam.nix
         ];
 
         mach = hostConfig [
