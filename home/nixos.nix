@@ -148,6 +148,8 @@ let
   );
 in
 {
+  imports = [ ./plasma ];
+
   home.packages = with pkgs; [
     neovim-qt
     neovide
