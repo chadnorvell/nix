@@ -1,1 +1,1 @@
-abbr -a tr trash-put
+abbr -a rt trash-put
