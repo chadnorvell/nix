@@ -1,4 +1,4 @@
-function git-del-branches
+function git-del-branches --description "delete git branches"
     argparse D dry-run -- $argv; or return
     set -l hidden main
 

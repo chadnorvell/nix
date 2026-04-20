@@ -1,4 +1,6 @@
 abbr -a ccd builtin cd
+abbr -a clear clear -x
+abbr -a cp cp -v
 abbr -a ga git add -A
 abbr -a gb git branch
 abbr -a gc git commit
@@ -33,3 +35,20 @@ abbr -a gxs git stash show
 abbr -a gy git cherry-pick
 abbr -a gya git cherry-pick --abort
 abbr -a gyc git cherry-pick --continue
+abbr -a jb jj bookmark
+abbr -a jc jj commit
+abbr -a jd jj describe
+abbr -a jg jj git
+abbr -a jgf jj git fetch
+abbr -a jgp jj git push
+abbr -a la eza -la
+abbr -a lg eza -l --git --git-ignore
+abbr -a lga eza -l --git
+abbr -a ll eza -l
+abbr -a ls ls --color=auto
+abbr -a rm trash
+abbr -a rrm command rm
+
+abbr -a !! --position anywhere --function history-1
+abbr -a !!! --position anywhere --function history-2
+abbr -a G --position anywhere "| grep"

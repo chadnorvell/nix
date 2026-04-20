@@ -97,9 +97,24 @@ in
     };
   };
 
+  programs.jujutsu = {
+    enable = true;
+
+    settings = {
+      user.name = "Chad Norvell";
+      user.email = "chadnorvell@pm.me";
+
+      ui.editor = "nvim";
+      ui.paginate = "never";
+
+      remotes.origin.auto-track-bookmarks = "*";
+    };
+  };
+
   programs.delta = {
     enable = true;
     enableGitIntegration = true;
+    enableJujutsuIntegration = true;
   };
 
   programs.bat = {
@@ -117,6 +132,12 @@ in
     enableBashIntegration = true;
     enableFishIntegration = true;
     nix-direnv.enable = true;
+
+    config = {
+      global = {
+        hide_env_diff = true;
+      };
+    };
   };
 
   programs.neovim = {
