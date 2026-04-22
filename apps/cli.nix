@@ -48,6 +48,7 @@
     trash-cli
     tree
     tree-sitter
+    unzip
     usbutils
     vim
     yq
