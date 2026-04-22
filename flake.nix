@@ -76,6 +76,7 @@
           default = pkgs.mkShell {
             packages = with pkgs; [
               fish-lsp
+              just
               lua-language-server
               nil
               nixfmt
