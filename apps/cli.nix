@@ -7,6 +7,7 @@
     claude-code
     curl
     direnv
+    dos2unix
     dust
     eza
     fastfetch

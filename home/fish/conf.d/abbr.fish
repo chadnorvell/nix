@@ -18,7 +18,6 @@ abbr -a gpu! git pull --rebase
 abbr -a gr git rebase
 abbr -a gra git rebase --abort
 abbr -a grc git rebase --continue
-abbr -a gri git rebase --interactive
 abbr -a grq git rebase --autosquash
 abbr -a gs git status
 abbr -a gup git push
