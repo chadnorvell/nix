@@ -54,8 +54,8 @@
           ./apps/steam.nix
         ];
 
-        mach = hostConfig [
-          ./hosts/mach.nix
+        advaita = hostConfig [
+          ./hosts/advaita.nix
           ./apps/workstation.nix
           nixos-hardware.nixosModules.framework-16-amd-ai-300-series
         ];

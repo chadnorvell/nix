@@ -6,7 +6,7 @@
     ./amdgpu.nix
   ];
 
-  networking.hostName = "mach";
+  networking.hostName = "advaita";
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/643e6fcf-e676-4d84-af12-717e8ed3fbb6";
