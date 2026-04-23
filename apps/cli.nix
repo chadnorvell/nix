@@ -16,6 +16,7 @@
     file
     flac
     fzf
+    gcc
     gh
     git
     git-lfs
