@@ -88,7 +88,6 @@ in
       user.email = "chadnorvell@pm.me";
 
       ui.editor = "nvim";
-      ui.paginate = "never";
 
       remotes.origin.auto-track-bookmarks = "*";
     };

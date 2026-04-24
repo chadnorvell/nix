@@ -39,6 +39,9 @@ abbr -a jd jj describe
 abbr -a jg jj git
 abbr -a jgf jj git fetch
 abbr -a jgp jj git push
+abbr -a jr jj squash
+abbr -a jri jj squash --interactive
+abbr -a js jj status
 abbr -a lg eza -l --git --git-ignore
 abbr -a lga eza -l --git
 
