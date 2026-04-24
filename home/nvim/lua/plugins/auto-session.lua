@@ -1,9 +1,13 @@
 return {
   "rmagatti/auto-session",
+  lazy = false,
+
+  ---@module "auto-session"
+  ---@type AutoSession.Config
   opts = {
-    session_lens = {
-      load_on_setup = false,
-    },
+    -- session_lens = {
+    --   load_on_setup = false,
+    -- },
     suppressed_dirs = { "/", "~/", "~/dev" },
   },
   keys = {
