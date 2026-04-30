@@ -6,6 +6,7 @@
   ...
 }:
 let
+  cp = pkgs.lib'.cp;
   ln = pkgs.lib'.ln;
   ln' = pkgs.lib'.ln';
 
@@ -163,8 +164,28 @@ in
     PATH = lib.strings.concatStringsSep ":" addToPath + ":$PATH";
   };
 
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    withPython3 = false;
+    withRuby = false;
+    initLua = cp "nvim/init.lua";
+  };
+
+  programs.tmux = {
+    enable = true;
+    extraConfig = cp "tmux/tmux.conf";
+  };
+
+  programs.vim = {
+    enable = true;
+    extraConfig = cp "vim/vimrc";
+  };
+
   xdg.configFile =
-    ln' "fish/conf.d/nixos" "fish/conf.d" [ "abbr-nixos.fish" ] // ln "kitty" [ "kitty.conf" ];
+    ln' "fish/conf.d/nixos" "fish/conf.d" [ "abbr-nixos.fish" ]
+    // ln "kitty" [ "kitty.conf" ]
+    // ln "neovide" [ "config.toml" ];
 
   xdg.userDirs = {
     enable = true;

@@ -1,6 +1,4 @@
 if vim.g.neovide then
-  vim.o.guifont = "Iosevka Nerd Font:h12"
-
   vim.keymap.set("n", "<D-n>", function()
     local file = vim.fn.expand("%:p")
     local line = vim.api.nvim_win_get_cursor(0)[1]

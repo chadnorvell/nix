@@ -10,6 +10,7 @@ if set -q should_prepend_paths
 end
 
 if status is-interactive
+    # Add completions from tools installed via Homebrew.
     if type -q brew
         set -l brew_prefix (brew --prefix)
         set -gp fish_complete_path $brew_prefix/share/fish/vendor_completions.d

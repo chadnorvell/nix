@@ -1,5 +1,6 @@
 { pkgs, ... }:
 let
+  ln = pkgs.lib'.ln;
   ln' = pkgs.lib'.ln';
 in
 {
@@ -11,18 +12,24 @@ in
     UseKeychain yes
   '';
 
-  xdg.configFile = ln' "fish/conf.d/darwin" "fish/conf.d" [
-    "abbr-darwin.fish"
-    "50-bun.fish"
-    "50-deno.fish"
-    "50-go.fish"
-    "50-npm.fish"
-    "50-pipx.fish"
-    "50-rust.fish"
-    "50-ssh.fish"
-    "90-local.fish"
-    "99-nix.fish"
-  ];
+  xdg.configFile =
+    ln' "fish/conf.d/darwin" "fish/conf.d" [
+      "abbr-darwin.fish"
+      "50-bun.fish"
+      "50-deno.fish"
+      "50-editor.fish"
+      "50-go.fish"
+      "50-npm.fish"
+      "50-pipx.fish"
+      "50-rust.fish"
+      "50-ssh.fish"
+      "90-local.fish"
+      "99-nix.fish"
+    ]
+    // ln "nvim" [ "init.lua" ]
+    // ln "tmux" [ "tmux.conf" ]
+    // ln "vim" [ "vimrc" ]
+    // ln' "neovide/darwin" "neovide" [ "config.toml" ];
 
   programs.iterm2 = {
     enable = true;

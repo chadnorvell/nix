@@ -122,27 +122,6 @@ in
     };
   };
 
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    withPython3 = false;
-    withRuby = false;
-
-    initLua = ''
-      require("cxn")
-    '';
-  };
-
-  programs.tmux = {
-    enable = true;
-    extraConfig = cp "tmux/tmux.conf";
-  };
-
-  programs.vim = {
-    enable = true;
-    extraConfig = cp "vim/vimrc";
-  };
-
   programs.yazi = {
     enable = true;
     enableBashIntegration = true;
