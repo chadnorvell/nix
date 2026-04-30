@@ -1,4 +1,6 @@
-not test -e "$HOME/.cargo/env.fish"; or set -q fish_sourced_cargo; and return
+set -q _fish_sourced_cargo; and return
+not test -e "$HOME/.cargo/env.fish"; and return
+
 source "$HOME/.cargo/env.fish"
-set -x fish_sourced_cargo
+set -x _fish_sourced_cargo
 
