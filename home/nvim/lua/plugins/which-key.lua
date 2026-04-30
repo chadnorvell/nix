@@ -7,6 +7,7 @@ return {
       { "<leader>b", group = "buffers" },
       { "<leader>c", group = "code" },
       { "<leader>g", group = "git" },
+      { "<leader>o", group = "obsidian" },
       { "<leader>s", group = "search" },
       { "<leader>t", group = "tabs" },
 
