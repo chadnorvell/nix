@@ -16,8 +16,34 @@ function _prompt_distrobox_container
     end
 end
 
+function _delta_info
+    set -l delta_path "$HOME/Δ/"
+    if string match -q "$delta_path*" "$PWD"
+        set -l rel (string replace "$delta_path" "" "$PWD")
+        string split -m 1 / "$rel"
+    end
+end
+
+function _prompt_delta_worktree
+    set -l info (_delta_info)
+    if set -q info[1]
+        string join '' -- (set_color -o brblue) $info[1] (set_color normal) ' '
+    end
+end
+
 function _prompt_pwd
-    string join '' -- (set_color -o brcyan) (prompt_pwd) (set_color normal) ' '
+    set -l info (_delta_info)
+    if set -q info[2]
+        set -l subpath $info[2]
+        if test -z "$subpath"
+            set subpath "."
+        end
+        string join '' -- (set_color -o brcyan) "$subpath" (set_color normal) ' '
+    else if set -q info[1]
+        string join '' -- (set_color -o brcyan) "." (set_color normal) ' '
+    else
+        string join '' -- (set_color -o brcyan) (prompt_pwd) (set_color normal) ' '
+    end
 end
 
 function _prompt_git
@@ -40,6 +66,15 @@ function _prompt_git
     set git_info (string replace '(' '' $git_info)
     set git_info (string replace ')' '' $git_info)
 
+    set -l info (_delta_info)
+    if set -q info[1]
+        set -l worktree $info[1]
+        set -l branch (git branch --show-current 2>/dev/null)
+        if test "$branch" = "$worktree"
+            set git_info (string replace -r "^$branch" "" "$git_info" | string trim)
+        end
+    end
+
     if test -n "$git_info"
         string join '' -- (set_color -o brmagenta) $git_info (set_color normal) ' '
     end
@@ -47,16 +82,12 @@ end
 
 function fish_prompt
     set -l last_status $status
-    set -l prompt_symbol (string join '' '» ' (set_color normal))
+    set -l prompt_symbol (string join '' (set -q IN_NIX_SHELL; and echo '»'; or echo '›') ' ' (set_color normal))
 
     set -l jobs (jobs | count)
 
     if test "$jobs" -gt 0
         set prompt_symbol (string join '' "$jobs$prompt_symbol")
-    end
-
-    if test -n "$IN_NIX_SHELL"
-        set prompt_symbol (string join '' "ƒ $prompt_symbol")
     end
 
     if test $last_status -ne 0
@@ -69,6 +100,7 @@ function fish_prompt
         (_prompt_timestamp) \
         (_prompt_hostname) \
         (_prompt_distrobox_container) \
+        (_prompt_delta_worktree) \
         (_prompt_pwd) \
         (_prompt_git) \
         $prompt_symbol
