@@ -30,17 +30,6 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  # Experiment: nixos-hardware's framework-16-amd-ai-300-series module sets
-  # amdgpu.dcdebugmask=0x410 (disable stutter + PSR_SU), amdgpu.sg_display=0,
-  # and amdgpu.abmlevel=0 as workarounds for graphical glitches. Each costs
-  # idle watts. These appended params exploit the kernel's last-wins parsing
-  # to restore defaults; revert if rendering glitches appear.
-  boot.kernelParams = lib.mkAfter [
-    "amdgpu.dcdebugmask=0"
-    "amdgpu.sg_display=-1"
-    "amdgpu.abmlevel=-1"
-  ];
-
   services.logind = {
     settings = {
       Login = {
