@@ -81,4 +81,16 @@ return {
       },
     },
   },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    keys = {
+      {
+        "<leader>ucl",
+        "<cmd>colorscheme catppuccin-latte<cr>",
+        desc = "catppuccin latte",
+      },
+    },
+  },
 }
