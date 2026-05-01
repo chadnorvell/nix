@@ -14,6 +14,7 @@ return {
       python = { "ruff_format", "ruff_organize_imports" },
       rust = { "rustfmt" },
       sh = { "shfmt" },
+      yaml = { "yamlfmt" },
 
       javascript = { "prettierd", "prettier", stop_after_first = true },
       javascriptreact = { "prettierd", "prettier", stop_after_first = true },
