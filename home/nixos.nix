@@ -149,7 +149,7 @@ let
   );
 in
 {
-  imports = [ ./plasma ];
+  imports = [ ./niri ];
 
   home.packages = with pkgs; [
     neovim-qt

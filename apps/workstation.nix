@@ -3,7 +3,7 @@
   imports = [
     ../apps/cli.nix
     ../apps/gui.nix
-    ../apps/plasma.nix
+    ../apps/niri.nix
     ../apps/1password.nix
     ../apps/davinci.nix
     ../apps/docker.nix

@@ -25,6 +25,7 @@
     inkscape
     kicad
     kitty
+    libreoffice-fresh
     mpv
     obsidian
     openscad
@@ -38,6 +39,9 @@
     sublime4
     thunderbird
     vlc
+    vscode-fhs
+    wl-clipboard
+    zathura
     zoom-us
   ];
 

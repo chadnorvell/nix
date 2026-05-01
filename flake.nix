@@ -77,6 +77,7 @@
             packages = with pkgs; [
               fish-lsp
               just
+              kdlfmt
               lua-language-server
               nil
               nixfmt
